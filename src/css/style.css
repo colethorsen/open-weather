@@ -26,3 +26,11 @@ strong {
 .hide {
 	display: none;
 }
+
+h1 {
+	font-weight: normal;
+}
+
+.entry {
+	border-top: 1px solid steelblue;
+}

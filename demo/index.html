@@ -24,28 +24,17 @@
 
 	<div class="weather-wrapper hide">
 
-		<img src="" class="weather-icon" alt="Weather Icon" />
-		
-		<p><strong>Place</strong>
-		<br /><span class="weather-place"></span></p>
-		
-		<p><strong>Temperature</strong>
-		<br /><span class="weather-temperature"></span> (<span class="weather-min-temperature"></span> - <span class="weather-max-temperature"></span>)</p>
-		
-		<p><strong>Description</strong>
-		<br /><span class="weather-description capitalize"></span></p>
-		
-		<p><strong>Humidity</strong>
-		<br /><span class="weather-humidity"></span></p>
-		
-		<p><strong>Wind speed</strong>
-		<br /><span class="weather-wind-speed"></span></p>
-		
-		<p><strong>Sunrise</strong>
-		<br /><span class="weather-sunrise"></span></p>
-		
-		<p><strong>Sunset</strong>
-		<br /><span class="weather-sunset"></span></p>
+		<h1>Currently:</h1>
+
+		<div class="weather">
+
+		</div>
+
+		<h1>Forecast:</h1>
+
+		<div class="forecast">
+
+		</div>
 	
 	</div>
 	
@@ -53,7 +42,7 @@
 
 	<script type="text/javascript">
 	if (typeof jQuery == 'undefined') {
-	    document.write(unescape("%3Cscript src='src/js/lib/jquery.1.9.1.min.js' type='text/javascript'%3E%3C/script%3E"));
+		document.write(unescape("%3Cscript src='src/js/lib/jquery.1.9.1.min.js' type='text/javascript'%3E%3C/script%3E"));
 	}
 	</script>
 	
@@ -63,18 +52,59 @@
 	
 		$(function() {
 		
-			$('.weather-temperature').openWeather({
+			$('.weather-wrapper').openWeather({
 				city: 'Toronto, ON',
-				descriptionTarget: '.weather-description',
-				windSpeedTarget: '.weather-wind-speed',
-				minTemperatureTarget: '.weather-min-temperature',
-				maxTemperatureTarget: '.weather-max-temperature',
-				humidityTarget: '.weather-humidity',
-				sunriseTarget: '.weather-sunrise',
-				sunsetTarget: '.weather-sunset',
-				placeTarget: '.weather-place',
-				iconTarget: '.weather-icon',
 				customIcons: '../src/img/icons/weather/',
+				type: 'both',
+				weatherTarget: '.weather',
+				weatherTemplate: 
+					'{{icon}}' +
+		
+					'<p><strong>Place</strong>' +
+					'<br>{{location}}</p>' +
+					
+					'<p><strong>Temperature</strong>' +
+					'<br>{{temp}}{{units}} ({{tempMin}}{{units}} - {{tempMax}}{{units}})</p>' +
+					
+					'<p><strong>Description</strong>' +
+					'<br>{{description}}</p>' +
+					
+					'<p><strong>Humidity</strong>' +
+					'<br>{{humidity}}</p>' +
+					
+					'<p><strong>Wind speed</strong>' +
+					'<br>{{windSpeed}}</p>' +
+
+					'<p><strong>Pressure</strong>' +
+					'<br>{{pressure}}</p>' +
+					
+					'<p><strong>Sunrise</strong>' +
+					'<br>{{sunrise}}</p>' +
+					
+					'<p><strong>Sunset</strong>' +
+					'<br>{{sunset}}</p>',
+				forecastDays: 5,
+				forecastTarget: '.forecast',
+				forecastTemplate:
+					'<div class="entry">' +
+
+						'<p><strong>{{day}}</strong></p>' +
+
+						'{{icon}}' +
+
+						'<p><strong>Temperature</strong>' +
+						'<br>{{tempMin}}{{units}} - {{tempMax}}{{units}}</p>' +
+
+						'<p><strong>Description</strong>' +
+						'<br>{{description}}</p>' +
+
+						'<p><strong>Humidity</strong>' +
+						'<br>{{humidity}}</p>' +
+
+						'<p><strong>Pressure</strong>' +
+						'<br>{{pressure}}</p>' +
+						
+					'</div>',
 				success: function() {
 				
 					//show weather

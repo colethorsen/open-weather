@@ -4,9 +4,9 @@ A simple, lightweight jQuery plugin used to display the current weather of any c
 
 This plugin allows you to display the location, the current temperature, the current low temperature, the current high temperature, a description of the current weather, a weather icon, the humidity level, the wind speed, the time the sun will rise, and the time the sun will set.
 
-<strong>An API key is not required but it is reccomended. <a href="http://openweathermap.org/login">Register here</a> to obtain an OpenWeatherMap API key for your application.</strong>
+<strong>An API key is not required but it is reccomended. <a href="http://openweathermap.org/register">Register here</a> to obtain an OpenWeatherMap API key for your application.</strong>
 
-<a href="http://michael-lynch.github.io/open-weather/" target="_blank">See demo</a>
+
 
 ##Instructions
 
@@ -53,6 +53,8 @@ The OpenWeatherMap API returns their own set of icons, however, if you don't wan
 	
 	<p>clouds.png</p>
 	
+	<p>few.png</p>
+
 	<p>rain.png</p>
 	
 	<p>snow.png</p>
@@ -102,48 +104,62 @@ $('.weather-temperature').openWeather({
 <br />An integer that defines the longitude (default: null).
 </p>
 
-<p><em>placeTarget: "id / class / element"</em>
-<br />A string that defines the ID, class or element that will contain the location name (default: null).
-</p>
-
 <p><em>units: "c / f"</em>
 <br />A string that defines the type of units (default: 'c').
 </p>
 
-<p><em>descriptionTarget: "id / class / element"</em>
-<br />A string that defines the ID, class or element that will contain the weather description (default: null).
-</p>
-
-<p><em>minTemperatureTarget: "id / class / element"</em>
-<br />A string that defines the ID, class or element that will contain the minimum temperature (default: null).
-</p>
-
-<p><em>maxTemperatureTarget: "id / class / element"</em>
-<br />A string that defines the ID, class or element that will contain the maximum temperature (default: null).
-</p>
-
-<p><em>windSpeedTarget: "id / class / element"</em>
-<br />A string that defines the ID, class or element that will contain the wind speed (default: null).
-</p>
-
-<p><em>humidityTarget: "id / class / element"</em>
-<br />A string that defines the ID, class or element that will contain the humidity (default: null).
-</p>
-
-<p><em>sunriseTarget: "id / class / element"</em>
-<br />A string that defines the ID, class or element that will contain the time of sunrise (default: null).
-</p>
-
-<p><em>sunsetTarget: "id / class / element"</em>
-<br />A string that defines the ID, class or element that will contain the time of sunset (default: null).
-</p>
-
-<p><em>iconTarget: "id / class / element"</em>
-<br />A string that defines the ID, class or element that will contain the icon image (default: null).
-</p>
-
 <p>customIcons: "path"</em>
 <br />A string that defines the path to the custom icons (default: null).
+</p>
+
+<p>type: "weather / forecast / both"</em>
+<br />A string that defines the type of weather report (default: weather).
+</p>
+
+<p><em>weatherTarget: "id / class / element"</em>
+<br />A string that defines the ID, class or element that will contain the weather (default: null).
+</p>
+
+<p><em>weatherTemplate: "string"</em>
+<br />A string that defines the content and structure of the weather display (default: null).
+<br />Variable Options:	
+	<ul>
+		<li>{{icon}}</li>
+		<li>{{location}}</li>
+		<li>{{temp}}</li>
+		<li>{{tempMin}}</li>
+		<li>{{tempMax}}</li>
+		<li>{{units}}</li>
+		<li>{{description}}</li>
+		<li>{{humidity}}</li>
+		<li>{{windSpeed}}</li>
+		<li>{{pressure}}</li>
+		<li>{{sunrise}}</li>
+		<li>{{sunset}}</li>
+	</ul>
+</p>
+
+<p><em>forecastDays: integer</em>
+<br />An integer that defines the number of days you wish to display for the forecast (default: 0).
+</p>
+
+<p><em>forecastTemplate: "string"</em>
+<br />A string that defines the content and structure of the forecast display (default: null).
+<br />Variable Options:	
+	<ul>
+		<li>{{day}}</li>
+		<li>{{icon}}</li>
+		<li>{{tempMin}}</li>
+		<li>{{tempMax}}</li>
+		<li>{{units}}</li>
+		<li>{{description}}</li>
+		<li>{{humidity}}</li>
+		<li>{{pressure}}</li>
+	</ul>
+</p>
+
+<p><em>forecastTarget: "id / class / element"</em>
+<br />A string that defines the ID, class or element that will contain the forecast (default: null).
 </p>
 
 <p><em>success: function() {}</em>
@@ -158,26 +174,70 @@ $('.weather-temperature').openWeather({
 
 ```js
 $(function() {
-
-	$('.weather-temperature').openWeather({
-		lang: 'ru',
+		
+	$('.weather-wrapper').openWeather({
 		city: 'Toronto, ON',
-		placeTarget: '.weather-place',
-		units: 'f',
-		descriptionTarget: '.weather-description',
-		minTemperatureTarget: '.weather-min-temperature',
-		maxTemperatureTarget: '.weather-max-temperature',
-		windSpeedTarget: '.weather-wind-speed',
-		humidityTarget: '.weather-humidity',
-		sunriseTarget: '.weather-sunrise',
-		sunsetTarget: '.weather-sunset',
-		iconTarget: '.weather-icon',
-		customIcons: '/img/icons/weather/',
+		customIcons: '../src/img/icons/weather/',
+		type: 'both',
+		weatherTarget: '.weather',
+		weatherTemplate: 
+			'{{icon}}' +
+
+			'<p><strong>Place</strong>' +
+			'<br>{{location}}</p>' +
+			
+			'<p><strong>Temperature</strong>' +
+			'<br>{{temp}}{{units}} ({{tempMin}}{{units}} - {{tempMax}}{{units}})</p>' +
+			
+			'<p><strong>Description</strong>' +
+			'<br>{{description}}</p>' +
+			
+			'<p><strong>Humidity</strong>' +
+			'<br>{{humidity}}</p>' +
+			
+			'<p><strong>Wind speed</strong>' +
+			'<br>{{windSpeed}}</p>' +
+
+			'<p><strong>Pressure</strong>' +
+			'<br>{{pressure}}</p>' +
+			
+			'<p><strong>Sunrise</strong>' +
+			'<br>{{sunrise}}</p>' +
+			
+			'<p><strong>Sunset</strong>' +
+			'<br>{{sunset}}</p>',
+		forecastDays: 5,
+		forecastTarget: '.forecast',
+		forecastTemplate:
+			'<div class="entry">' +
+
+				'<p><strong>{{day}}</strong></p>' +
+
+				'{{icon}}' +
+
+				'<p><strong>Temperature</strong>' +
+				'<br>{{tempMin}}{{units}} - {{tempMax}}{{units}}</p>' +
+
+				'<p><strong>Description</strong>' +
+				'<br>{{description}}</p>' +
+
+				'<p><strong>Humidity</strong>' +
+				'<br>{{humidity}}</p>' +
+
+				'<p><strong>Pressure</strong>' +
+				'<br>{{pressure}}</p>' +
+				
+			'</div>',
 		success: function() {
-			$('.weather-temperature').show();
+		
+			//show weather
+			$('.weather-wrapper').show();
+			
 		},
 		error: function(message) {
+		
 			console.log(message);
+		
 		}
 	});
 	
