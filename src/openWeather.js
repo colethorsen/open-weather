@@ -65,7 +65,7 @@ Licensed under the MIT license
 		if(s.city !== null) {
 			
 			//define API url using city (and remove any spaces in city)
-			apiURL += '&q='+s.city.replace(' ', '');
+			apiURL += '&q='+s.city;
 			
 		} else if(s.lat !== null && s.lng !== null) {
 			
@@ -242,7 +242,10 @@ Licensed under the MIT license
 
 					var output = s.weatherTemplate;
 
-					if(s.weatherTemplate === null) {
+					if(typeof data.message != 'undefined') {
+						s.error.call(this, data.message);
+					
+					} else if(s.weatherTemplate === null) {
 
 						//set temperature
 						el.html(formatTemperature(data.main.temp) + formatUnits());
@@ -290,25 +293,29 @@ Licensed under the MIT license
 				dataType: 'jsonp',
 				success: function(data) {
 					
-					//loop through the number of days set.
-					for (i = 0; i < s.forecastDays; i++) {
+					if(typeof data.message == 'undefined') {
+						s.error.call(this, data.message);
+					
+					} else {
 
-						var output = s.forecastTemplate,
-							forecast = data.list[i];
+						//loop through the number of days set.
+						for (i = 0; i < s.forecastDays; i++) {
 
-						console.log(forecast);
+							var output = s.forecastTemplate,
+								forecast = data.list[i];
 
-						output = output.replace('{{tempMin}}', formatTemperature(forecast.temp.min))
-							.replace('{{tempMax}}', formatTemperature(forecast.temp.max))
-							.replace('{{description}}', forecast.weather[0].description)
-							.replace('{{icon}}', setIcon(forecast.weather[0]))
-							.replace('{{pressure}}', forecast.pressure + ' hPa') //TODO: add support for different units
-							.replace('{{humidity}}', forecast.humidity + '%')
-							.replace('{{day}}', formatDay(forecast.dt))
-							.replace(/{{units}}/g, formatUnits());
-						
-						$(s.forecastTarget).append(output);
+							output = output.replace('{{tempMin}}', formatTemperature(forecast.temp.min))
+								.replace('{{tempMax}}', formatTemperature(forecast.temp.max))
+								.replace('{{description}}', forecast.weather[0].description)
+								.replace('{{icon}}', setIcon(forecast.weather[0]))
+								.replace('{{pressure}}', forecast.pressure + ' hPa') //TODO: add support for different units
+								.replace('{{humidity}}', forecast.humidity + '%')
+								.replace('{{day}}', formatDay(forecast.dt))
+								.replace(/{{units}}/g, formatUnits());
+							
+							$(s.forecastTarget).append(output);
 
+						}
 					}
 
 				},
