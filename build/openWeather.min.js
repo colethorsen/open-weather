@@ -5,7 +5,7 @@ Dependencies: jQuery, OpenWeatherMap API
 Author: Michael Lynch
 Author URL: http://michaelynch.com
 Date Created: August 28, 2013
-Date Modified: Octover 7, 2014
+Date Modified: December 24, 2014
 Modified by: Cole Thorsen (impulsestudios.ca)
 Licensed under the MIT license
 
